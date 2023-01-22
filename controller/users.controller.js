@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.usersController = void 0;
 const users_service_1 = require("../services/users.service");
 const users_utils_1 = require("../utils/users.utils");
+const mailer_controller_1 = require("./mailer.controller");
 class usersController {
     static getUsers(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -33,8 +34,9 @@ class usersController {
     static registerOne(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield users_service_1.usersService.register(req.body);
-                res.status(200).send('Inserted successfully');
+                const data = yield users_service_1.usersService.register(req.body);
+                const mail = yield mailer_controller_1.mailerController.sendRegisterData(data);
+                res.status(200).send(data);
             }
             catch (error) {
                 return res.status(500).send((0, users_utils_1.getErrorMessage)(error));

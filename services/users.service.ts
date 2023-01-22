@@ -4,15 +4,20 @@ import * as mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken"
 import {SECRET_KEY} from "../middleware/auth";
+import {generatePass} from "../utils/auth.utils";
+import {usersController} from "../controller/users.controller";
+import {mailerController} from "../controller/mailer.controller";
 
 class usersService{
    static async getUsers()  {
         const userData  = await User.find()
         return userData
     }
-    static async register(user: mongoose.DocumentDefinition<IUser>) :Promise<void> {
+    static async register(user: mongoose.DocumentDefinition<IUser>) :Promise<IUser> {
         try {
-            await User.create(user);
+            let newUser = await User.create({...user, password:generatePass(5)});
+
+            return newUser
         } catch (error) {
             throw error;
         }

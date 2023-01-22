@@ -40,6 +40,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const routes_1 = require("./routes");
 const db_1 = require("./configs/data/db");
 const mongoose = __importStar(require("mongoose"));
+const media_server_1 = require("./media_server");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 5050;
@@ -48,6 +49,7 @@ app.use('', routes_1.mainRouter);
 function startServer(port) {
     return __awaiter(this, void 0, void 0, function* () {
         yield mongoose.connect(db_1.DB_URL);
+        yield media_server_1.nms.run();
         app.listen(3000, () => {
             console.log(`Server has been started on PORT: ${port}`);
         });

@@ -7,3 +7,4 @@ const auth_1 = require("../../../middleware/auth");
 const usersRouter = (0, express_1.Router)();
 exports.usersRouter = usersRouter;
 usersRouter.get("/", auth_1.auth, users_controller_1.usersController.getUsers);
+usersRouter.post("/confitm-email", auth_1.auth, users_controller_1.usersController.getUsers);

@@ -17,6 +17,7 @@ const users_model_1 = require("../models/users.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const auth_1 = require("../middleware/auth");
+const auth_utils_1 = require("../utils/auth.utils");
 class usersService {
     static getUsers() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -27,7 +28,8 @@ class usersService {
     static register(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                yield users_model_1.User.create(user);
+                let newUser = yield users_model_1.User.create(Object.assign(Object.assign({}, user), { password: (0, auth_utils_1.generatePass)(5) }));
+                return newUser;
             }
             catch (error) {
                 throw error;

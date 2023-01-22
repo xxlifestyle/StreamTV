@@ -15,10 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
 const mongoose_1 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const shortid_1 = __importDefault(require("shortid"));
 const userSchema = new mongoose_1.Schema({
     username: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    avatar: { type: String }
+    email: { type: String, required: true, unique: true },
+    password: { type: String, },
+    avatar: { type: String },
+    stream_key: { type: String }
 });
 const saltRounds = 8;
 userSchema.pre('save', function (next) {
@@ -30,5 +33,8 @@ userSchema.pre('save', function (next) {
         next();
     });
 });
+userSchema.methods.generateStreamKey = () => {
+    return shortid_1.default.generate();
+};
 const User = (0, mongoose_1.model)('Users', userSchema);
 exports.User = User;

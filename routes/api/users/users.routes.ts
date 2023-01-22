@@ -6,5 +6,6 @@ const usersRouter :Router = Router()
 
 
 usersRouter.get("/", auth, usersController.getUsers)
+usersRouter.post("/confitm-email", auth, usersController.getUsers)
 
 export {usersRouter}

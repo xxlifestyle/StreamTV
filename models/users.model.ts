@@ -1,11 +1,16 @@
 import {Schema, model} from "mongoose"
 import {IUser} from "./interfaces/users.interface";
 import bcrypt from "bcrypt"
+import shortid from "shortid"
+import {mailerController} from "../controller/mailer.controller";
+
 
 const userSchema = new Schema<IUser>({
         username: {type: String, required: true, unique: true},
-        password: {type: String, required: true},
-        avatar: {type: String}
+        email: {type: String, required: true, unique: true},
+        password: {type: String, },
+        avatar: {type: String},
+        stream_key:{type: String}
     }
 )
 const saltRounds = 8
@@ -17,6 +22,11 @@ userSchema.pre('save', async function (next) {
     }
     next();
 });
+
+
+userSchema.methods.generateStreamKey = () :string => {
+    return shortid.generate()
+}
 
 const User = model<IUser>('Users', userSchema);
 
